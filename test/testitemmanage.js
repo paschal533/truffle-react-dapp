@@ -1,3 +1,5 @@
+const { assert } = require("console");
+
 const itemManager = artifacts.require("./ItemManager.sol");
 
 contract("itemManager", accounts => {
@@ -7,6 +9,10 @@ contract("itemManager", accounts => {
     const itemPrice = 500;
 
     const result = await itemMangerInstances.createItem(itemName, itemPrice, {from: accounts[0]});
-    console.log(result);
+    assert.equal(result.logs[0].args._itemIdex, 0, "it not the first item");
+
+    const item = await itemMangerInstances.items(0);
+    console.log(item);
+    assert.equal(item._identifier, itemName, "it not the first item");
   })
 })
